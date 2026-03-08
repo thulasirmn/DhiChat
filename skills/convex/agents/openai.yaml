@@ -1,0 +1,4 @@
+interface:
+  display_name: "Convex Backend"
+  short_description: "Schema, functions, and auth-safe data workflows."
+  default_prompt: "Use $convex to implement or update Convex schema/functions and integrate them into this app safely."
