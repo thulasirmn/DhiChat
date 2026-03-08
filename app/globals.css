@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #d7d0fa;
+  --panel: #f6f6f9;
+  --panel-soft: #f0f0f6;
+  --border: #e6e4f1;
+  --text: #1f2027;
+  --muted: #6e7084;
+  --accent: #6d5cf6;
+  --success: #2f9f62;
+  --warn: #d88833;
+  --danger: #d44747;
+  --font-body: "Manrope";
+  --font-display: "Fraunces";
+}
+
+[data-theme="dark"] {
+  --bg: #0d1121;
+  --panel: #141a2f;
+  --panel-soft: #1a213a;
+  --border: #2a3354;
+  --text: #eef2ff;
+  --muted: #a7b0d0;
+  --accent: #8f80ff;
+  --success: #49c981;
+  --warn: #f1ad53;
+  --danger: #fb6d6d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(120% 100% at 100% 0%, #c8c0f8 0%, rgba(200, 192, 248, 0) 55%),
+    radial-gradient(130% 120% at 0% 100%, #b6d9f8 0%, rgba(182, 217, 248, 0) 60%),
+    linear-gradient(135deg, #c8c0f5 0%, #a6c9f1 100%);
+  color: var(--text);
+}
+
+[data-theme="dark"] body {
+  background:
+    radial-gradient(120% 100% at 100% 0%, #1d2750 0%, rgba(29, 39, 80, 0) 55%),
+    radial-gradient(130% 120% at 0% 100%, #1b3a55 0%, rgba(27, 58, 85, 0) 60%),
+    linear-gradient(135deg, #111736 0%, #0e1c33 100%);
+}
+
+body {
+  font-family: var(--font-body), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(109, 92, 246, 0.28);
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+}
+
+[data-theme="dark"] .subtle-grid {
+  background-image:
+    linear-gradient(to right, rgba(177, 189, 236, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(177, 189, 236, 0.12) 1px, transparent 1px);
+}
+
+[data-theme="dark"] .app-shell {
+  border-color: rgba(169, 182, 226, 0.25);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: #1a213a !important;
+}
+
+[data-theme="dark"] .hover\:bg-white:hover {
+  background-color: #273152 !important;
+}
+
+[data-theme="dark"] .hover\:bg-panelSoft:hover {
+  background-color: #232c4a !important;
+}
+
+[data-theme="dark"] .hover\:text-text:hover {
+  color: #eef2ff !important;
+}
+
+[data-theme="dark"] .text-\[\#222335\],
+[data-theme="dark"] .text-\[\#26273a\],
+[data-theme="dark"] .text-\[\#28293b\],
+[data-theme="dark"] .text-\[\#303143\],
+[data-theme="dark"] .text-\[\#2f3a5f\] {
+  color: #eef2ff !important;
+}
+
+[data-theme="dark"] .text-\[\#4f5062\],
+[data-theme="dark"] .text-\[\#555684\],
+[data-theme="dark"] .text-\[\#53547b\],
+[data-theme="dark"] .text-\[\#47485d\],
+[data-theme="dark"] .text-\[\#4a4b63\],
+[data-theme="dark"] .text-\[\#4b5a84\],
+[data-theme="dark"] .text-\[\#334b77\] {
+  color: #b2bcde !important;
+}
+
+[data-theme="dark"] .text-\[\#3e3a2b\],
+[data-theme="dark"] .text-\[\#564831\] {
+  color: #f3e1b8 !important;
+}
+
+[data-theme="dark"] .text-\[\#23834c\] {
+  color: #9fe3ba !important;
+}
+
+[data-theme="dark"] .bg-\[\#efeff5\],
+[data-theme="dark"] .bg-\[\#ececf2\],
+[data-theme="dark"] .bg-\[\#efeff7\],
+[data-theme="dark"] .bg-\[\#ececf7\] {
+  background-color: #1a213a !important;
+}
+
+[data-theme="dark"] .bg-\[\#d8e6ff\] {
+  background-color: #243457 !important;
+}
+
+[data-theme="dark"] .bg-\[\#f4e8cb\] {
+  background-color: #3a3120 !important;
+}
+
+[data-theme="dark"] .bg-\[\#f3f2fb\] {
+  background-color: #222846 !important;
+}
+
+[data-theme="dark"] .border-white\/60,
+[data-theme="dark"] .border-white\/40 {
+  border-color: rgba(161, 175, 223, 0.25) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .interactive-soft:hover,
+  .interactive-soft:active,
+  .pressable:active {
+    transform: none !important;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply relative overflow-visible rounded-[2rem] border border-white/40 bg-panel shadow-soft backdrop-blur;
+  }
+
+  .subtle-grid {
+    background-image:
+      linear-gradient(to right, rgba(152, 158, 191, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(152, 158, 191, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .surface-card {
+    @apply rounded-3xl border border-border bg-panel shadow-card;
+  }
+
+  .interactive-soft {
+    @apply transition duration-200 ease-out;
+  }
+
+  .interactive-soft:hover {
+    transform: translateY(-2px);
+  }
+
+  .interactive-soft:active {
+    transform: translateY(0);
+  }
+
+  .pressable {
+    @apply transition duration-150 ease-out active:scale-[0.98];
+  }
+}
