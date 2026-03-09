@@ -33,7 +33,7 @@ const insightItems = [
 
 export default async function InboxPage() {
   const session = await requireSession();
-  const { conversations } = await getInboxData();
+  const { conversations } = await getInboxData(session.userId);
 
   return (
     <PageShell

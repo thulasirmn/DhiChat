@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { withAuth } from "@workos-inc/authkit-nextjs";
+import { repository } from "@/lib/services/repository";
 
 export type AppSession = {
   userId: string;
@@ -28,6 +29,14 @@ function toAppSession(auth: Awaited<ReturnType<typeof withAuth>>): AppSession | 
 export async function requireSession(): Promise<AppSession> {
   const auth = await withAuth({ ensureSignedIn: true });
 
+  await repository.upsertUser({
+    userId: auth.user.id,
+    email: auth.user.email,
+    firstName: auth.user.firstName,
+    lastName: auth.user.lastName,
+    organizationId: auth.organizationId ?? null
+  });
+
   return {
     userId: auth.user.id,
     firstName: auth.user.firstName ?? null,
@@ -40,6 +49,17 @@ export async function requireSession(): Promise<AppSession> {
 
 export async function getSession(): Promise<AppSession | null> {
   const auth = await withAuth();
+
+  if (auth.user) {
+    await repository.upsertUser({
+      userId: auth.user.id,
+      email: auth.user.email,
+      firstName: auth.user.firstName,
+      lastName: auth.user.lastName,
+      organizationId: auth.organizationId ?? null
+    });
+  }
+
   return toAppSession(auth);
 }
 

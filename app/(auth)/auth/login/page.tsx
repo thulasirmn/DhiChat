@@ -22,7 +22,7 @@ export default async function LoginPage() {
           <p className="inline-flex rounded-full bg-[#ececf7] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#555684]">
             Secure Access
           </p>
-          <h1 className="pt-5 text-4xl font-bold tracking-tight sm:text-5xl">Welcome to DhiChat</h1>
+          <h1 className="pt-5 text-4xl font-bold tracking-tight sm:text-5xl">Welcome to DHIFLOW</h1>
           <p className="pt-4 text-base text-muted sm:text-lg">
             Sign in to manage Instagram conversations, automation quality, and AI insights in real time.
           </p>

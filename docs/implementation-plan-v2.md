@@ -1,5 +1,5 @@
 # Implementation Plan (Step-by-Step)
-## Project: DhiChat Instagram Automation (PRD Execution)
+## Project: DHIFLOW Instagram Automation (PRD Execution)
 ## Date: March 8, 2026
 
 ## Context

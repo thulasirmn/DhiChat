@@ -1,10 +1,10 @@
 # Product Requirements Document (PRD)
-## Product: DhiChat Instagram Automation Platform (V1)
+## Product: DHIFLOW Instagram Automation Platform (V1)
 ## Date: March 8, 2026
 ## Owner: Product + Engineering
 
 ## 1. Product Summary
-DhiChat is a multi-tenant Instagram automation platform that helps brands auto-respond to Instagram DMs and post comments using AI. Users connect one or more Instagram Business/Creator accounts, monitor conversations in a unified inbox, and run fully automated lead-generation replies with strict safety fallback and full auditability.
+DHIFLOW is a multi-tenant Instagram automation platform that helps brands auto-respond to Instagram DMs and post comments using AI. Users connect one or more Instagram Business/Creator accounts, monitor conversations in a unified inbox, and run fully automated lead-generation replies with strict safety fallback and full auditability.
 
 ## 2. Problem Statement
 Brands and agencies lose leads because Instagram comments and DMs are not responded to quickly or consistently. Manual handling is slow, difficult to scale, and hard to audit.

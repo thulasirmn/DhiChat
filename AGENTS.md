@@ -1,9 +1,6 @@
 # Agent Guidelines - DhiChat
 
 This document defines engineering best practices for contributors and AI agents working in this repository.
-Agents must follow these rules before generating, modifying, or reviewing code.
-
-Failure to follow these rules is considered **agent error**.
 
 ## 1. Product and Stack
 - Framework: Next.js 16 (App Router).
@@ -124,7 +121,6 @@ Every significant change must include:
 Never bundle unrelated refactors in feature PRs.
 
 ## 16. Convex Schema Enforcement
-- Use Conves skill for creating, updating or making any chnages related to convex.
 - Treat `convex/schema.ts` as the source of truth for persisted data.
 - Any new field/table requires schema update first, then code usage.
 - Avoid runtime writes for fields not represented in schema validators.

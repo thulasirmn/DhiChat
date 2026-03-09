@@ -7,7 +7,7 @@ import { getAccountsData } from "@/lib/services/dashboard";
 
 export default async function AccountsPage() {
   const session = await requireSession();
-  const { accounts } = await getAccountsData();
+  const { accounts } = await getAccountsData(session.userId);
 
   return (
     <PageShell

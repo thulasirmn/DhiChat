@@ -7,7 +7,7 @@ import { getAuditData } from "@/lib/services/dashboard";
 
 export default async function AuditPage() {
   const session = await requireSession();
-  const { events } = await getAuditData();
+  const { events } = await getAuditData(session.userId);
 
   return (
     <PageShell

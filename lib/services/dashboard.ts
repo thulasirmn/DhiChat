@@ -1,19 +1,19 @@
 import { repository } from "@/lib/services/repository";
 
-export async function getInboxData() {
+export async function getInboxData(userId: string) {
   return {
-    conversations: repository.getConversations()
+    conversations: await repository.getConversations(userId)
   };
 }
 
-export async function getAccountsData() {
+export async function getAccountsData(userId: string) {
   return {
-    accounts: repository.getAccounts()
+    accounts: await repository.getAccounts(userId)
   };
 }
 
-export async function getAuditData() {
+export async function getAuditData(userId: string) {
   return {
-    events: repository.getAuditEvents()
+    events: await repository.getAuditEvents(userId)
   };
 }

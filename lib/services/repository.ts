@@ -1,10 +1,13 @@
+import { getConvexClient } from "@/lib/convex/client";
 import { type AuditEvent, type ConversationSummary, type InstagramAccount } from "@/lib/services/types";
 import { type NormalizedEvent } from "@/lib/validation/automation";
+import { api } from "@/convex/_generated/api";
 
 type ReplyAttemptRecord = {
   id: string;
   idempotencyKey: string;
   conversationId: string;
+  accountId: string;
   action: "sent" | "fallback" | "failed";
   text: string;
   intent: string;
@@ -15,7 +18,6 @@ type ReplyAttemptRecord = {
 };
 
 const processedKeys = new Set<string>();
-const replyAttempts = new Map<string, ReplyAttemptRecord>();
 
 const conversations: ConversationSummary[] = [
   {
@@ -60,19 +62,81 @@ const audit: AuditEvent[] = [
   }
 ];
 
+function hasConvexClient(): boolean {
+  return Boolean(getConvexClient());
+}
+
 export const repository = {
-  isProcessed: (idempotencyKey: string): boolean => processedKeys.has(idempotencyKey),
-
-  markProcessed: (idempotencyKey: string): void => {
-    processedKeys.add(idempotencyKey);
+  async upsertUser(input: {
+    userId: string;
+    email: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    organizationId?: string | null;
+  }): Promise<void> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      await client!.mutation(api.repository.upsertUser, {
+        userId: input.userId,
+        email: input.email,
+        firstName: input.firstName ?? undefined,
+        lastName: input.lastName ?? undefined,
+        organizationId: input.organizationId ?? undefined
+      });
+    }
   },
 
-  persistIncomingEvent: (_event: NormalizedEvent): void => {
-    // Convex mutation hook point.
+  async isProcessed(userId: string, idempotencyKey: string): Promise<boolean> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      return client!.query(api.repository.isProcessed, { userId, idempotencyKey });
+    }
+
+    return processedKeys.has(`${userId}:${idempotencyKey}`);
   },
 
-  persistReplyAttempt: (record: ReplyAttemptRecord): void => {
-    replyAttempts.set(record.id, record);
+  async markProcessed(userId: string, idempotencyKey: string): Promise<void> {
+    processedKeys.add(`${userId}:${idempotencyKey}`);
+  },
+
+  async persistIncomingEvent(userId: string, event: NormalizedEvent): Promise<void> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      await client!.mutation(api.repository.persistIncomingEvent, {
+        userId,
+        idempotencyKey: event.idempotencyKey,
+        channel: event.channel,
+        accountId: event.accountId,
+        conversationId: event.conversationId,
+        senderId: event.senderId,
+        text: event.text,
+        timestamp: event.timestamp,
+        raw: JSON.stringify(event.raw)
+      });
+      return;
+    }
+  },
+
+  async persistReplyAttempt(userId: string, record: ReplyAttemptRecord): Promise<void> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      await client!.mutation(api.repository.persistReplyAttempt, {
+        userId,
+        eventId: record.id,
+        idempotencyKey: record.idempotencyKey,
+        conversationId: record.conversationId,
+        accountId: record.accountId,
+        action: record.action,
+        text: record.text,
+        intent: record.intent,
+        confidence: record.confidence,
+        language: record.language,
+        promptVersion: record.promptVersion,
+        createdAt: record.createdAt
+      });
+      return;
+    }
+
     audit.unshift({
       id: `audit_${crypto.randomUUID()}`,
       eventType: record.action === "sent" ? "sent" : record.action === "fallback" ? "fallback" : "failed",
@@ -82,7 +146,30 @@ export const repository = {
     });
   },
 
-  getConversations: (): ConversationSummary[] => conversations,
-  getAccounts: (): InstagramAccount[] => accounts,
-  getAuditEvents: (): AuditEvent[] => audit.slice(0, 50)
+  async getConversations(userId: string): Promise<ConversationSummary[]> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      return client!.query(api.repository.getConversations, { userId });
+    }
+
+    return conversations;
+  },
+
+  async getAccounts(userId: string): Promise<InstagramAccount[]> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      return client!.query(api.repository.getAccounts, { userId });
+    }
+
+    return accounts;
+  },
+
+  async getAuditEvents(userId: string): Promise<AuditEvent[]> {
+    if (hasConvexClient()) {
+      const client = getConvexClient();
+      return client!.query(api.repository.getAuditEvents, { userId });
+    }
+
+    return audit.slice(0, 50);
+  }
 };

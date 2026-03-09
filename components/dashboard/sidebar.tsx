@@ -70,7 +70,7 @@ export function Sidebar({ pathname, session }: { pathname: string; session: AppS
   return (
     <aside className="hidden min-h-[calc(100vh-3rem)] flex-col rounded-[1.6rem] border border-border bg-[#efeff5] p-4 lg:flex">
       <div className="interactive-soft rounded-2xl bg-white px-3 py-4">
-        <p className="text-lg font-bold tracking-tight text-[#222335]">DHI CHAT</p>
+        <p className="text-lg font-bold tracking-tight text-[#222335]">DHIFLOW</p>
         <p className="pt-1 text-xs text-muted">Instagram Automation</p>
       </div>
 

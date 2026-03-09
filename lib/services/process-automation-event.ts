@@ -7,11 +7,13 @@ import { sendInstagramReply } from "@/lib/services/send-instagram-reply";
 import { type NormalizedEvent } from "@/lib/validation/automation";
 
 export async function processAutomationEvent(event: NormalizedEvent): Promise<{ skipped: boolean; reason?: string }> {
-  if (repository.isProcessed(event.idempotencyKey)) {
+  const userId = "system";
+
+  if (await repository.isProcessed(userId, event.idempotencyKey)) {
     return { skipped: true, reason: "already_processed" };
   }
 
-  repository.persistIncomingEvent(event);
+  await repository.persistIncomingEvent(userId, event);
 
   const intent = await classifyIntent(event);
   const candidate = await generateReply(event, intent);
@@ -24,11 +26,12 @@ export async function processAutomationEvent(event: NormalizedEvent): Promise<{ 
       run: async () => sendInstagramReply(event, safety.text)
     });
 
-    repository.markProcessed(event.idempotencyKey);
-    repository.persistReplyAttempt({
+    await repository.markProcessed(userId, event.idempotencyKey);
+    await repository.persistReplyAttempt(userId, {
       id: crypto.randomUUID(),
       idempotencyKey: event.idempotencyKey,
       conversationId: event.conversationId,
+      accountId: event.accountId,
       action: safety.action === "send" ? "sent" : "fallback",
       text: safety.text,
       intent: intent.intent,
@@ -40,10 +43,11 @@ export async function processAutomationEvent(event: NormalizedEvent): Promise<{ 
 
     return { skipped: false, reason: sent.providerMessageId };
   } catch (error) {
-    repository.persistReplyAttempt({
+    await repository.persistReplyAttempt(userId, {
       id: crypto.randomUUID(),
       idempotencyKey: event.idempotencyKey,
       conversationId: event.conversationId,
+      accountId: event.accountId,
       action: "failed",
       text: safety.text,
       intent: intent.intent,

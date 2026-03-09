@@ -4,7 +4,7 @@ import { withAuth } from "@workos-inc/authkit-nextjs";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "DhiChat | Instagram Automation",
+  title: "DHIFLOW | Instagram Automation",
   description: "Minimalist AI automation for Instagram comments and DMs"
 };
 
